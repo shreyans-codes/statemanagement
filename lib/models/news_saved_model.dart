@@ -1,24 +1,24 @@
 import 'package:sembast/timestamp.dart';
 
 class NewsSavedModel {
-  int id;
-  final String title;
-  final String author;
-  final String description;
-  final String content;
-  final String urlToImage;
-  final String link;
-  final Timestamp publishedAt;
-  final String country;
-  final String category;
+  int id = 0;
+  String title;
+  String author;
+  String description;
+  String content;
+  String? urlToImage;
+  String? link;
+  Timestamp? publishedAt;
+  String country;
+  String category;
 
   NewsSavedModel({
-    this.country,
-    this.category,
-    this.title,
-    this.author,
-    this.description,
-    this.content,
+    this.country = "",
+    this.category = "",
+    this.title = "",
+    this.author = "",
+    this.description = "",
+    this.content = "",
     this.urlToImage,
     this.link,
     this.publishedAt,

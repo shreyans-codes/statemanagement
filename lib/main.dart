@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 controller.toggleTheme();
               },
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
                 "Change Theme",
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Get.to(NewsPage()),
               child: Text("Go to News"),
             ),

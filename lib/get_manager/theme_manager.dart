@@ -3,40 +3,50 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends GetxController {
-  bool isDarkTheme = false;
-  SharedPreferences preferences;
+  late Future<bool?> isDarkTheme;
+  Future<SharedPreferences> preferences = SharedPreferences.getInstance();
   checkTheme() async {
-    if (preferences==null){
-      preferences = await SharedPreferences.getInstance();
-    }
-    isDarkTheme = preferences.getBool('isDarkTheme');
-    if (isDarkTheme == null) {
-      Get.changeTheme(ThemeData.light());
-      isDarkTheme = false;
-    }
-    switch (isDarkTheme) {
+    final SharedPreferences pref = await preferences;
+    final bool? darkTheme = await isDarkTheme;
+    isDarkTheme = pref.setBool('isDarkTheme', darkTheme!).then((bool success) {
+      return darkTheme;
+    });
+    switch (darkTheme) {
       case true:
         Get.changeTheme(ThemeData.dark());
         break;
-        case false:
+      case false:
         Get.changeTheme(ThemeData.light());
         break;
-      default: Get.snackbar("Error", "An unexpected error occured. Please retry");
+      default:
+        Get.snackbar("Error", "An unexpected error occured. Please retry");
     }
     print(isDarkTheme);
     update();
   }
 
   @override
-  void onInit() {
+  void onInit() async {
+    isDarkTheme = preferences.then((SharedPreferences pref) {
+      return pref.getBool('isDarkTheme') ?? false;
+    });
+    final bool? darkTheme = await isDarkTheme;
+    print(darkTheme);
     checkTheme();
     print("Hello");
     super.onInit();
   }
 
   void toggleTheme() async {
-    isDarkTheme = !isDarkTheme;
-    preferences.setBool('isDarkTheme', isDarkTheme);
+    bool? darkTheme = await isDarkTheme;
+    if (darkTheme!)
+      darkTheme = false;
+    else
+      darkTheme = true;
+    final SharedPreferences pref = await preferences;
+    isDarkTheme = pref.setBool('isDarkTheme', darkTheme!).then((bool success) {
+      return darkTheme;
+    });
     Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
   }
 }

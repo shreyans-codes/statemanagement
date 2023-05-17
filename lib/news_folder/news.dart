@@ -4,9 +4,9 @@ import '../models/article.dart';
 import 'dart:convert';
 
 class News {
-  String country;
+  String country = "";
   String category = "";
-  News({this.country, this.category});
+  News({required this.country, required this.category});
   String key = "4dcabeb7c68e4206bedb10de952c2296";
   String headline = "top-headlines";
   List<Article> news = [];
@@ -15,7 +15,8 @@ class News {
     try {
       String url =
           "http://newsapi.org/v2/$headline?country=$country$category&apiKey=$key";
-      var response = await http.get(url);
+      var response = await http.get(Uri.parse(url));
+      print("Response = " + response.body);
       var jsonData = await jsonDecode(response.body);
       if (jsonData['status'] == 'ok') {
         jsonData['articles'].forEach(
@@ -23,8 +24,7 @@ class News {
             Article article = new Article(
               title: element['title'] ?? "No Title Provided",
               description: element['description'] ?? "No Description Provided",
-              publishedAt:
-                  DateTime.parse(element['publishedAt']) ?? "No Date Provided",
+              publishedAt: DateTime.parse(element['publishedAt']),
               content: element['content'] ?? "No Content Provided",
               urlToImage: element['urlToImage'] ?? "empty",
               author: element['author'] ?? "Author Name Not Provided",
@@ -38,7 +38,7 @@ class News {
     } catch (e) {
       Get.snackbar(
         "An Error Occured",
-        e.message,
+        e.toString(),
         snackPosition: SnackPosition.BOTTOM,
       );
       result = 'fail';

@@ -5,14 +5,14 @@ class Article {
   String content;
   String urlToImage;
   String link;
-  DateTime publishedAt;
+  DateTime? publishedAt;
   Article({
-    this.link,
-    this.author,
-    this.content,
-    this.description,
+    this.link = "",
+    this.author = "",
+    this.content = "",
+    this.description = "",
     this.publishedAt,
-    this.title,
-    this.urlToImage,
+    this.title = "",
+    this.urlToImage = "",
   });
 }

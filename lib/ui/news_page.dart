@@ -1,10 +1,11 @@
 import 'dart:ui';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:statemanagement/get_manager/new_database_manager.dart';
 import 'package:statemanagement/get_manager/news_manager.dart';
+import 'package:statemanagement/main.dart';
 import 'package:statemanagement/ui/news_article_page.dart';
 import 'package:statemanagement/ui/starred_news.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,7 +30,8 @@ class NewsPage extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.folder_special),
               onPressed: () => Get.to(
-                StarredNews(),
+                // StarredNews(),
+                MyApp(),
               ),
             ),
           ],
@@ -38,12 +40,14 @@ class NewsPage extends StatelessWidget {
           child: GetBuilder<NewsManagerController>(
             init: NewsManagerController(),
             builder: (s) {
+              Widget retVal = Text("Emptiness!");
               switch (s.status) {
                 case "loading":
-                  return CircularProgressIndicator();
+                  print("Here at loading!");
+                  retVal = CircularProgressIndicator();
                   break;
                 case "success":
-                  return Swiper(
+                  retVal = Swiper(
                     itemCount: s.displayNews.length,
                     itemBuilder: (BuildContext context, int index) {
                       return NewsTile(index);
@@ -63,11 +67,12 @@ class NewsPage extends StatelessWidget {
                   );
                   break;
                 case "error":
-                  return Center(
+                  retVal = Center(
                     child: Text("Sorry we encountered an error"),
                   );
                   break;
               }
+              return retVal;
             },
           ),
         ),
@@ -78,13 +83,13 @@ class NewsPage extends StatelessWidget {
 
 class NewsTile extends StatelessWidget {
   final NewsManagerController nmc = Get.find();
-  final NewsDatabaseController newsDatabaseController =
-      Get.put(NewsDatabaseController());
+  // final NewsDatabaseController newsDatabaseController =
+  //     Get.put(NewsDatabaseController());
   final index;
   NewsTile(this.index);
   @override
   Widget build(BuildContext context) {
-    var length = nmc.displayNews[index].content?.length;
+    var length = nmc.displayNews[index].content.length;
     String content = length > 20
         ? nmc.displayNews[index].content.substring(0, (length - 14))
         : nmc.displayNews[index].content;
@@ -140,11 +145,11 @@ class NewsTile extends StatelessWidget {
         NewsArticlePage(index, nmc.displayNews[index].title, content),
       ),
       onDoubleTap: () {
-        newsDatabaseController.addToList(
-            nmc.displayNews[index], "India", "None");
-        return Get.snackbar(
+        // newsDatabaseController.addToList(
+        //     nmc.displayNews[index], "India", "None");
+        Get.snackbar(
           "You liked it, huh?",
-          NewsPage.snackbarMessage["liked"],
+          NewsPage.snackbarMessage["liked"]!,
           backgroundColor: Colors.black87.withOpacity(0.5),
           colorText: Colors.white,
         );

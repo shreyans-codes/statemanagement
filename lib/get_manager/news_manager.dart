@@ -18,7 +18,7 @@ enum NewsCategory {
   technology,
 }
 
-String getCountryString({CountrySource countrySource}) {
+String getCountryString({CountrySource countrySource = CountrySource.india}) {
   String returnString = "in";
   switch (countrySource) {
     case CountrySource.india:
@@ -36,7 +36,7 @@ String getCountryString({CountrySource countrySource}) {
   return returnString;
 }
 
-String getCategoryString({NewsCategory newsCategory}) {
+String getCategoryString({NewsCategory newsCategory = NewsCategory.none}) {
   String returnString = "";
   switch (newsCategory) {
     case NewsCategory.none:
@@ -70,8 +70,8 @@ class NewsManagerController extends GetxController {
   String status = "loading";
   List<Article> displayNews = [];
   Future<List<Article>> fetch({
-    CountrySource countrySource,
-    NewsCategory newsCategory,
+    CountrySource countrySource = CountrySource.india,
+    NewsCategory newsCategory = NewsCategory.none,
   }) async {
     status = "loading";
     update();
@@ -79,6 +79,7 @@ class NewsManagerController extends GetxController {
     String category = getCategoryString(newsCategory: newsCategory);
     News news = News(country: country, category: category);
     String result = await news.getNews();
+    print("Result" + result);
     if (result == 'success') {
       status = "success";
       update();
