@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:statemanagement/get_manager/new_database_manager.dart';
 import 'package:statemanagement/get_manager/news_manager.dart';
+import 'package:statemanagement/get_manager/theme_manager.dart';
 import 'package:statemanagement/main.dart';
 import 'package:statemanagement/ui/news_article_page.dart';
 import 'package:statemanagement/ui/starred_news.dart';
@@ -11,11 +12,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class NewsPage extends StatelessWidget {
   final NewsManagerController nmc = Get.put(NewsManagerController());
+  final Controller themeController = Get.put(Controller());
   static var snackbarMessage = {
     "error": "",
     "saved": "You will be able to see all your saved news here",
     "liked": "This article has been saved in your likes folder",
   };
+  NewsCategory newsCategory = NewsCategory.none;
+  CountrySource countrySource = CountrySource.india;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,10 +35,147 @@ class NewsPage extends StatelessWidget {
               icon: Icon(Icons.folder_special),
               onPressed: () => Get.to(
                 // StarredNews(),
-                MyApp(),
+                () => MyApp(),
               ),
             ),
           ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              ListTile(
+                title: Text("Country",
+                    style: hamburgerMainCategory.copyWith(
+                        color: Get.isDarkMode
+                            ? Colors.orange[300]
+                            : Colors.orange)),
+              ),
+              Column(
+                children: [
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("India"),
+                    onTap: () {
+                      countrySource = CountrySource.india;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("USA"),
+                    onTap: () {
+                      countrySource = CountrySource.usa;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("South Korea"),
+                    onTap: () {
+                      countrySource = CountrySource.southKorea;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                ],
+              ),
+              ListTile(
+                title: Text(
+                  "Categories",
+                  style: hamburgerMainCategory.copyWith(
+                      color:
+                          Get.isDarkMode ? Colors.orange[300] : Colors.orange),
+                ),
+              ),
+              Column(
+                children: [
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("Top Headlines"),
+                    onTap: () {
+                      newsCategory = NewsCategory.none;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("Business"),
+                    onTap: () {
+                      newsCategory = NewsCategory.business;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("Entertainment"),
+                    onTap: () {
+                      newsCategory = NewsCategory.entertainment;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("Health"),
+                    onTap: () {
+                      newsCategory = NewsCategory.health;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("Science"),
+                    onTap: () {
+                      newsCategory = NewsCategory.science;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("Sports"),
+                    onTap: () {
+                      newsCategory = NewsCategory.sports;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 30),
+                    title: Text("Technology"),
+                    onTap: () {
+                      newsCategory = NewsCategory.technology;
+                      nmc.fetch(
+                          countrySource: countrySource,
+                          newsCategory: newsCategory);
+                    },
+                  ),
+                ],
+              ),
+              TextButton(
+                onPressed: () {
+                  themeController.toggleTheme();
+                },
+                child: Text(
+                  "Change Theme",
+                ),
+              ),
+            ],
+          ),
         ),
         body: Center(
           child: GetBuilder<NewsManagerController>(
@@ -142,7 +283,7 @@ class NewsTile extends StatelessWidget {
         ),
       ),
       onTap: () => Get.to(
-        NewsArticlePage(index, nmc.displayNews[index].title, content),
+        () => NewsArticlePage(index, nmc.displayNews[index].title, content),
       ),
       onDoubleTap: () {
         // newsDatabaseController.addToList(
@@ -166,4 +307,8 @@ var headlineStyle = TextStyle(
 var contentStyle = TextStyle(
   fontSize: 20,
   color: Colors.white,
+);
+
+var hamburgerMainCategory = const TextStyle(
+  fontSize: 20,
 );

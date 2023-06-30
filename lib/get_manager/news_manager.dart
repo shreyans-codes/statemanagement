@@ -96,7 +96,7 @@ class NewsManagerController extends GetxController {
     print("Started fetching");
     fetch(
       countrySource: CountrySource.india,
-      newsCategory: NewsCategory.health,
+      newsCategory: NewsCategory.none,
     );
     super.onInit();
   }

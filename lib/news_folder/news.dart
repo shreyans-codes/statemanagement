@@ -2,12 +2,13 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../models/article.dart';
 import 'dart:convert';
+import '../doc/api/api_key.dart';
 
 class News {
   String country = "";
   String category = "";
   News({required this.country, required this.category});
-  String key = "4dcabeb7c68e4206bedb10de952c2296";
+  String key = apiKey;
   String headline = "top-headlines";
   List<Article> news = [];
   Future<String> getNews() async {
