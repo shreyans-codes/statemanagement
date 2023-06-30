@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () => Get.to(NewsPage()),
+              onPressed: () => Get.to(() => NewsPage()),
               child: Text("Go to News"),
             ),
           ],

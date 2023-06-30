@@ -35,7 +35,7 @@ class NewsPage extends StatelessWidget {
               icon: Icon(Icons.folder_special),
               onPressed: () => Get.to(
                 // StarredNews(),
-                MyApp(),
+                () => MyApp(),
               ),
             ),
           ],
@@ -283,7 +283,7 @@ class NewsTile extends StatelessWidget {
         ),
       ),
       onTap: () => Get.to(
-        NewsArticlePage(index, nmc.displayNews[index].title, content),
+        () => NewsArticlePage(index, nmc.displayNews[index].title, content),
       ),
       onDoubleTap: () {
         // newsDatabaseController.addToList(

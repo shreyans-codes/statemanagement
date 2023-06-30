@@ -39,6 +39,7 @@ class Controller extends GetxController {
 
   void toggleTheme() async {
     bool? darkTheme = await isDarkTheme;
+    // print(darkTheme);
     if (darkTheme!)
       darkTheme = false;
     else
@@ -47,6 +48,6 @@ class Controller extends GetxController {
     isDarkTheme = pref.setBool('isDarkTheme', darkTheme!).then((bool success) {
       return darkTheme;
     });
-    Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
+    Get.changeTheme(darkTheme ? ThemeData.light() : ThemeData.dark());
   }
 }
